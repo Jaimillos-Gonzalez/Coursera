@@ -1,7 +1,8 @@
 from PIL import Image
 import glob
 import os
-
+import requests
+import json
 
 
 # Para la pr  ctica de Coursera
@@ -30,3 +31,40 @@ for nombre_archivo in os.listdir(directorio_imagenes):
             new_img.save(ruta_directorio_padre + "/opt/icons/" + nombre_archivo + ".jpeg")
         except Exception as e:
             print(f"Error al procesar: {nombre_archivo}: {e}")
+
+
+#NUEVA PARTE DE PRACTICA
+directorio_feedbacks = ""
+#Creamos un diccionario donde almacenar los datos de cada fichero:
+diccionario = {}
+
+cont_lineas = 1
+
+url = "http://http://34.75.9.73//feedback"
+
+for feedback_file in os.listdir(directorio_feedbacks):
+    print(feedback_file)
+    cont_lineas = 1
+    ruta_completa = os.path.join(directorio_feedbacks, feedback_file)
+    try:
+        with open(ruta_completa, 'r', encoding='utf-8') as f:
+            for linea in f:
+                if cont_lineas == 1:
+                    diccionario['title'] = linea
+                if cont_lineas == 2:
+                    diccionario['name'] = linea
+                if cont_lineas == 3:
+                    diccionario['date'] = linea
+                if cont_lineas == 4:
+                    diccionario['feedback '] = linea
+                
+                cont_lineas +=1 
+    except FileNotFoundError: 
+        print(f"  Error: El archivo '{feedback_file}' no se encuentra.")
+
+    print("Elementos del diccionario:")
+    for clave, valor in diccionario.items():
+        print(f"{clave}: {valor}")
+
+    #Ahora lo mando al REST
+    request.post()
