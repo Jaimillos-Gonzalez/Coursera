@@ -67,4 +67,6 @@ for feedback_file in os.listdir(directorio_feedbacks):
         print(f"{clave}: {valor}")
 
     #Ahora lo mando al REST
-    request.post()
+    cabeceras = {'Content-Type': 'application/json'}
+    datos_json = json.dumps(diccionario)
+    requests.post(url, datos_json, cabeceras)
